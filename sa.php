@@ -241,7 +241,7 @@ class SchedulingAlgorithm {
                    'Filename'   => "File",  
                    'Sort'       => "Sorted", 
                    'ExtraRuns'  => "Extra Runs", 
-                   'De2tailed'   => "Keep Details", 
+                   'De2tailed'  => "Keep Details", 
                    'Time'       => "Time [μs]"];
 
     // Format data for clean display
