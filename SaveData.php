@@ -10,13 +10,13 @@
       array_shift($arrHistory);
 
     $arrHistory[] = ['Timestamp'  => time(), 
-                           'Filename'   => $sFilename,  
-                           'Sort'       => $bSortData, 
-                           'ExtraRuns'  => $nIterations, 
-                           'Detailed'   => $bPreserveDetails, 
-                           'Time'       => $nTimeAverage];
+                     'Filename'   => $sFilename,  
+                     'Sort'       => $bSortData, 
+                     'ExtraRuns'  => $nIterations, 
+                     'Detailed'   => $bPreserveDetails, 
+                     'Time'       => $nTimeAverage];
 
     file_put_contents("History.json", json_encode($arrHistory));
-
-    file_put_contents("Results/" . $sFilename . " Results " . ($nIterations + 1) . ".txt", implode(PHP_EOL, $arrTime));
+    
+    file_put_contents("Results/Results " . $sFilename . " I" . ($nIterations + 1) . ".txt", implode(PHP_EOL, $arrTime));
   }
