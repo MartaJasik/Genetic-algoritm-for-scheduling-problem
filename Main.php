@@ -6,7 +6,6 @@ include 'UserInput.php';
 include 'Algorithms.php';
 
 class SchedulingAlgorithm {
-  private $arrComplexResults   = [];
   private $arrHistory          = [];
   private $arrDirectories      = ["Instances", "Results"];
   private $arrAlgorithmConfig  = [1 => ["Data file            ", 'Choose!'],
@@ -80,11 +79,12 @@ class SchedulingAlgorithm {
 
   /* Function running the algorithms on given sets of data */
   function runTest() {
-    $sFileName        = $this->arrAlgorithmConfig[1][1];
-    $bSortData        = $this->arrAlgorithmConfig[2][1];
-    $nIterations      = $this->arrAlgorithmConfig[3][1];
-    $bPreserveDetails = $this->arrAlgorithmConfig[4][1];
-    $arrTime          = [];
+    $sFileName         = $this->arrAlgorithmConfig[1][1];
+    $bSortData         = $this->arrAlgorithmConfig[2][1];
+    $nIterations       = $this->arrAlgorithmConfig[3][1];
+    $bPreserveDetails  = $this->arrAlgorithmConfig[4][1];
+    $arrComplexResults = [];
+    $arrTime           = [];
 
     /* 1. READ FILE  */   
     message("Reading " . $sFileName . "...");
@@ -101,20 +101,15 @@ class SchedulingAlgorithm {
       rsort($arrInstance);
 
     /* 3. CHOOSE TYPE OF TASK TO RUN */
-    if ($bPreserveDetails) {
+    if ($bPreserveDetails)
       for ($x = 0; $x <= $nIterations; $x++)
-        $arrTime[] = runComplexAlgo($nProcessors, $arrInstance, $this->arrComplexResults);
-
-      // If only a single run - propose displaying detailed output data
-      if (!$nIterations)
-        if (askQuestion("Do you want to display tasks assigned to each processor?"))
-          printComplexResults($this->arrComplexResults);
-    } else
+        $arrTime[] = runComplexAlgo($nProcessors, $arrInstance, $arrComplexResults);
+    else
       for ($x = 0; $x <= $nIterations; $x++)
         $arrTime[] = runSimpleAlgo($nProcessors, $arrInstance);
 
     /* 4. DISPLAY TIME RESULTS AND SAVE TO FILE */
-    displayAndSaveResults($this->arrHistory, $sFileName, $bSortData, $nIterations, $bPreserveDetails, $arrTime);
+    displayAndSaveResults($this->arrHistory, $arrComplexResults, $sFileName, $bSortData, $nIterations, $bPreserveDetails, $arrTime);
   }
 
   /* Function generating the test instances based on user input */

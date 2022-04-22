@@ -10,12 +10,13 @@
   /* Display formatted history */
   function showHistory($arrHistory) {
     $arrLengths = [];
-    $arrHeaders = ['Timestamp'  => "Date", 
-                   'Filename'   => "File",  
-                   'Sort'       => "Sorted", 
-                   'ExtraRuns'  => "Extra Runs", 
+    $arrHeaders = ['Timestamp' => "Date", 
+                   'Filename'  => "File",  
+                   'Sort'      => "Sorted", 
+                   'ExtraRuns' => "Extra Runs", 
                    'Detailed'  => "Keep Details", 
-                   'Time'       => "Time [μs]"];
+                   'Tmax'      => "Tmax", 
+                   'Time'      => "Time [μs]"];
     // Format data for clean display
     foreach($arrHistory as $key => $value) {
       $arrHistory[$key]['Timestamp'] = date("m/d H:i:s", ($arrHistory[$key]['Timestamp'] + 7200)); 
