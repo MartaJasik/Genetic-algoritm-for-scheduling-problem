@@ -8,7 +8,7 @@
 
       // Print found files
       foreach ($arrFiles as $key => $value)
-        message($key . ": " . $value);
+        message($key . ": " . basename($value));
 
       $nChosenKey = askForNumber("Which file do you want to use?", [0, count($arrFiles)-1]);
       

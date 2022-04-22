@@ -4,15 +4,17 @@
   function runComplexAlgo($nProcessors, $arrTasks, &$arrComplexResults) {
     $nStart = microtime(true);
     for ($x = 0; $x <= $nProcessors; $x++) 
-        $arrProcessors[] = [0, []];
+      $arrProcessors[] = [0, []];
       
     foreach ($arrTasks as $nTask) {
-      $nKey = array_search(min(array_column($arrProcessors, 0)), array_column($arrProcessors, 0));
+      $arrCol                   = array_column($arrProcessors, 0);
+      $nKey                     = array_search(min($arrCol), $arrCol);
       $arrProcessors[$nKey][0] += $nTask;
       array_push($arrProcessors[$nKey][1], $nTask);
     }
     $arrComplexResults = $arrProcessors;
-    return (microtime(true) - $nStart) * 1000000;
+
+    return (microtime(true) - $nStart);
   }
 
   /* Simple alghoritm, doesn't preserve which tasks went to which processor (cares only about execution time) */
@@ -22,12 +24,9 @@
       $arrProcessors[] = 0;
   
     foreach ($arrTasks as $nTask) {
-      $nKey = array_search(min($arrProcessors), $arrProcessors);
+      $nKey                  = array_search(min($arrProcessors), $arrProcessors);
       $arrProcessors[$nKey] += $nTask;
     }
-    return (microtime(true) - $nStart) * 1000000;
-  }
 
-  function runAlgorithm() {
-
+    return (microtime(true) - $nStart);
   }
