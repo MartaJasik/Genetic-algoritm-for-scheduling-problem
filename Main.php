@@ -11,7 +11,7 @@ class SchedulingAlgorithm {
   private $arrAlgorithmConfig  = [1 => ["Data file            ", 'Choose!'],
                                   2 => ["Data sorting         ", true],
                                   3 => ["Extra iterations     ", 0],
-                                  4 => ["Preserve data details", true],
+                                  4 => ["Genetic algorithm    ", true],
                                   5 => ["Generate instances...", 'X'],
                                   6 => ["Run tests!           ", 'X'],
                                   7 => ["Show history...      ", 'X'],
@@ -54,7 +54,7 @@ class SchedulingAlgorithm {
           $this->arrAlgorithmConfig[3][1] = askForNumber("How many extra iterations?", [0, 99999]);
           break;
         case 4:
-          $this->arrAlgorithmConfig[4][1] = askQuestion("Do you want to preserve data on elements processed by each processor?");
+          $this->arrAlgorithmConfig[4][1] = askQuestion("Do you want to run a genetic algorithm? (No = greedy one)");
           break;
         case 5:
           $this->generateInstance();
@@ -82,8 +82,8 @@ class SchedulingAlgorithm {
     $sFileName         = $this->arrAlgorithmConfig[1][1];
     $bSortData         = $this->arrAlgorithmConfig[2][1];
     $nIterations       = $this->arrAlgorithmConfig[3][1];
-    $bPreserveDetails  = $this->arrAlgorithmConfig[4][1];
-    $arrComplexResults = [];
+    $bGeneticAlgo      = $this->arrAlgorithmConfig[4][1];
+    $arrRunResults = [];
     $arrTime           = [];
 
     /* 1. READ FILE  */   
@@ -101,15 +101,18 @@ class SchedulingAlgorithm {
       rsort($arrInstance);
 
     /* 3. CHOOSE TYPE OF TASK TO RUN */
-    if ($bPreserveDetails)
+    if ($bGeneticAlgo) {
+      $arrInitialPopulation = generateInitialPopulation($arrInstance, 20, 50);
+      for ($x = 0; $x <= $nIterations; $x++) {
+        $nTime = runGeneticAlgo($nProcessors, $arrInstance, 20, 50, $arrInitialPopulation);
+        message($x . ": Min pop length is $nTime.");
+      }
+    } else
       for ($x = 0; $x <= $nIterations; $x++)
-        $arrTime[] = runComplexAlgo($nProcessors, $arrInstance, $arrComplexResults);
-    else
-      for ($x = 0; $x <= $nIterations; $x++)
-        $arrTime[] = runSimpleAlgo($nProcessors, $arrInstance);
+        $arrTime[] = runGreedyAlgo($nProcessors, $arrInstance, $arrRunResults);
 
     /* 4. DISPLAY TIME RESULTS AND SAVE TO FILE */
-    displayAndSaveResults($this->arrHistory, $arrComplexResults, $sFileName, $bSortData, $nIterations, $bPreserveDetails, $arrTime);
+    displayAndSaveResults($this->arrHistory, $arrRunResults, $sFileName, $bSortData, $nIterations, $bGeneticAlgo, $arrTime);
   }
 
   /* Function generating the test instances based on user input */

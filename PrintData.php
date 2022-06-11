@@ -1,10 +1,10 @@
 <?php
 
-  /* Print complex results - tasks assigned for each processor */
-  function printComplexResults($arrComplexResults) {
-    for ($x = 0; $x < count($arrComplexResults); $x++) 
-      message("(" . str_repeat("0", strlen((string)count($arrComplexResults))-strlen((string)$x+1)) . ($x+1) 
-                   . ") Length: " . $arrComplexResults[$x][0] . "; Elements: " . json_encode($arrComplexResults[$x][1]));
+  /* Print greedy results - tasks assigned for each processor */
+  function printGreedyResults($arrRunResults) {
+    for ($x = 0; $x < count($arrRunResults); $x++) 
+      message("(" . str_repeat("0", strlen((string)count($arrRunResults))-strlen((string)$x+1)) . ($x+1) 
+                   . ") Length: " . $arrRunResults[$x][0] . "; Elements: " . json_encode($arrRunResults[$x][1]));
   }
 
   /* Display formatted history */
