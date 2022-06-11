@@ -40,9 +40,8 @@
     for ($x = 0; $x < $nProcessors; $x++) 
       $arrProcessors[] = 0;
 
-    foreach ($arrPopulation as $arrSpecimen) {
+    foreach ($arrPopulation as $arrSpecimen)
       $arrRunResults[] = [runSimpleGreedy($arrProcessors, $arrSpecimen), $arrSpecimen];
-    }
   
     // sort specimens by best times
     usort($arrRunResults, "sortByIndexZero");
@@ -51,7 +50,7 @@
     $arrNewPopulation[] = $arrRunResults[0][1];
 
     // populate new population
-    for ($x = 0; $x < $nPopSize; $x++) {
+    for ($x = 0; $x < $nPopSize-1; $x++) {
       // take two parents from first half of last population results
       $arrTwoRandParentKeys = array_rand(range(0, floor(count($arrRunResults)/2)), 2);
   
@@ -83,8 +82,8 @@
     $nTasksToMix = floor($nNumOfTasks * ($nPopMixFactor / 100) / 2);
     $arrInitialPopulation[] = $arrTasks; 
     
-    for ($x = 0; $x < $nPopSize; $x++) 
-      $arrInitialPopulation[$x+1] = mixSpecimen($arrInitialPopulation[$x], $nTasksToMix, $nNumOfTasks);
+    for ($x = 1; $x < $nPopSize; $x++) 
+      $arrInitialPopulation[$x] = mixSpecimen($arrInitialPopulation[$x-1], $nTasksToMix, $nNumOfTasks);
 
     return $arrInitialPopulation;
   }
