@@ -8,9 +8,9 @@ include 'Algorithms.php';
 class SchedulingAlgorithm {
   private $arrHistory          = [];
   private $arrDirectories      = ["Instances", "Results"];
-  private $arrAlgorithmConfig  = [1 => ["Data file            ", 'Choose!'],
-                                  2 => ["Data sorting         ", true],
-                                  3 => ["Extra iterations     ", 0],
+  private $arrAlgorithmConfig  = [1 => ["Data file            ", 'm25.txt'],
+                                  2 => ["Data sorting         ", false],
+                                  3 => ["Extra iterations     ", 10000],
                                   4 => ["Genetic algorithm    ", true],
                                   5 => ["Generate instances...", 'X'],
                                   6 => ["Run tests!           ", 'X'],
@@ -103,10 +103,20 @@ class SchedulingAlgorithm {
     /* 3. CHOOSE TYPE OF TASK TO RUN */
     if ($bGeneticAlgo) {
       $arrInitialPopulation = generateInitialPopulation($arrInstance, 20, 50);
-      for ($x = 0; $x <= $nIterations; $x++) {
-        $nTime = runGeneticAlgo($nProcessors, $arrInstance, 20, 50, $arrInitialPopulation);
-        message($x . ": Min pop length is $nTime.");
-      }
+      $time_start           = microtime(true);
+      $endtime              = $time_start + 3000;
+      $x                    = 0;
+      $bMutate = false;
+
+      do {
+        $nTime = runGeneticAlgo($nProcessors, $arrInstance, 20, $arrInitialPopulation, $bMutate);
+        $x++;
+        if ($x % 10 == 0) {
+          message($x . ": Min pop length is $nTime.");
+          $bMutate = true;
+        } else
+          $bMutate = false;
+      } while ($endtime > microtime(true));
     } else
       for ($x = 0; $x <= $nIterations; $x++)
         $arrTime[] = runGreedyAlgo($nProcessors, $arrInstance, $arrRunResults);

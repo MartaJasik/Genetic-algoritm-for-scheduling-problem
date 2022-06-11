@@ -31,9 +31,8 @@
 
 
   /* Genetic alghoritm, preserves which tasks went to which processor (on top of providing the execution time) */
-  function runGeneticAlgo($nProcessors, $arrTasks, $nPopSize, $nPopMixFactor, &$arrPopulation) {
+  function runGeneticAlgo($nProcessors, $arrTasks, $nPopSize, &$arrPopulation, $bMutate) {
     $arrRunResults = [];
-    $nStart = microtime(true);
     $nNumOfTasks = count($arrTasks);
     
     // Create universal processor table
@@ -42,7 +41,7 @@
 
     foreach ($arrPopulation as $arrSpecimen)
       $arrRunResults[] = [runSimpleGreedy($arrProcessors, $arrSpecimen), $arrSpecimen];
-  
+
     // sort specimens by best times
     usort($arrRunResults, "sortByIndexZero");
 
@@ -51,6 +50,11 @@
 
     // populate new population
     for ($x = 0; $x < $nPopSize-1; $x++) {
+      if ($bMutate) {
+        $arrNewPopulation[] = mixSpecimen($arrRunResults[0][1], 2, $nNumOfTasks);
+        continue;
+      }
+
       // take two parents from first half of last population results
       $arrTwoRandParentKeys = array_rand(range(0, floor(count($arrRunResults)/2)), 2);
   
@@ -58,20 +62,16 @@
       $arrParent2 = $arrRunResults[$arrTwoRandParentKeys[1]][1];
   
       $arrAvailableIndexes = range(0, $nNumOfTasks-1);
-      $arrTwoRandKeys      = array_rand($arrAvailableIndexes, 2);
+      $arrTwoRandKeys      = array_rand($arrAvailableIndexes, 3);
 
       $arrNewPopulation[] = crossover($arrParent1, $arrParent2, min($arrTwoRandKeys), max($arrTwoRandKeys));
     }
 
-    foreach ($arrNewPopulation as $arrSpecimen) {
+    $arrRunResults = [];
+    foreach ($arrNewPopulation as $arrSpecimen) 
       $arrRunResults[] = [runSimpleGreedy($arrProcessors, $arrSpecimen), $arrSpecimen];
-    }
-    $arrPopulation =$arrNewPopulation;
-/*     foreach ($arrInitialPopulation as $pop)
-      echo json_encode($pop) . PHP_EOL;
-*/
-   // echo json_encode($arrRunResults);
-
+    
+    $arrPopulation = $arrNewPopulation;
 
     return min(array_column($arrRunResults, 0));
   }
@@ -90,8 +90,8 @@
 
   function mixSpecimen($arrTasks, $nTasksToMix, $nNumOfTasks) {
     $arrAvailableIndexes = range(0, $nNumOfTasks-1);
-    $arrRandomMixes = [];
-    $arrNewSpecimen = $arrTasks;
+    $arrRandomMixes      = [];
+    $arrNewSpecimen      = $arrTasks;
 
     for ($x = 0; $x < $nTasksToMix; $x++) {
       $arrTwoRandKeys = array_rand($arrAvailableIndexes, 2);
@@ -116,15 +116,10 @@
 
 
 function crossover($arrParent1, $arrParent2, $nStartIndex, $nEndIndex) {
-  $newChild = array_fill(0, count($arrParent1), 0);;
-  $nLength = $nEndIndex - $nStartIndex + 1;
+  $newChild     = array_fill(0, count($arrParent1), 0);
+  $nLength      = $nEndIndex - $nStartIndex + 1;
   $arrInterval1 = array_slice($arrParent1, $nStartIndex, $nLength);
   $arrInterval2 = array_slice($arrParent2, $nStartIndex, $nLength);
-
-  $arrParent2Rest = [];
-  for ($x = 0; $x <= count($arrParent2); $x++) {
-    
-  }
 
   $arrParent2Rest  = array_slice($arrParent2, 0, $nStartIndex);
 
@@ -144,8 +139,7 @@ function crossover($arrParent1, $arrParent2, $nStartIndex, $nEndIndex) {
       if (($key = array_search($i, $arrParent2Rest)) !== false) {
         unset($arrParent2Rest[$key]);
       }
-    }
-    else if (in_array($i, $arrInterval2)) {
+    } else if (in_array($i, $arrInterval2)) {
       if (($key = array_search($i, $arrInterval2)) !== false) {
         unset($arrInterval2[$key]);
       }

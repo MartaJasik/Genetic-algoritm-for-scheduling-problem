@@ -36,7 +36,7 @@
   }
 
   /* Function asking user for a number between 1-3000. */
-  function askForNumber($sQuestion, $arrRange = [1,3000]) {
+  function askForNumber($sQuestion, $arrRange = [1,5000]) {
     while (true) {
       $a = readline($sQuestion . ' (' . $arrRange[0] . '-' . $arrRange[1] . ')' . PHP_EOL);
       if (is_numeric($a) && $a >= $arrRange[0] && $a <= $arrRange[1])
