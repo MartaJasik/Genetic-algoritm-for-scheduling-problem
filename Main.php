@@ -10,8 +10,8 @@ class SchedulingAlgorithm {
   private $arrDirectories      = ["Instances", "Results"];
   private $arrAlgorithmConfig  = [1 => ["Data file               ", 'm25.txt'],
                                   2 => ["Data sorting            ", false],
-                                  3 => ["Extra iterations        ", 10000],
-                                  4 => ["Genetic algorithm       ", true],
+                                  3 => ["Extra iterations        ", 0],
+                                  4 => ["Genetic algorithm       ", false],
                                   5 => ["Generate instances...   ", 'X'],
                                   6 => ["Run tests!              ", 'X'],
                                   7 => ["Show (greedy) history...", 'X'],

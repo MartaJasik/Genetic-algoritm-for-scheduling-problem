@@ -14,8 +14,6 @@
     }
     $arrRunResults = $arrProcessors;
 
-    message(json_encode($arrProcessors));
-
     return (microtime(true) - $nStart);
   }
 
