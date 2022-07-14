@@ -15,14 +15,14 @@ Possibility to:
 
 ### To run:
 Go to the application root folder and use:
-php Main.php
+`php Main.php`
 
 If you decide to run a genethic alghoritm - you have to stop the program manually. It is an intended choice, as - for the testing purposes - desired runtimes vary and might be quite long. During the testing phase - 5 minutes has proven itself to be enough for most of the default instances to achieve a satisfactory result.
 
 ## The genetic alghoritm 
 The genetic algorithm is a metaheuristic inspired by natural selection processes. It is used to generate highly optimized solutions based on biological mechanisms - mutations, crossing over and selection.
 
-The process begins with the selection of the 'best' (in our case - with the lowest Tmax) individuals. By crossing them, we get the offspring - inheriting parental traits - to be added to the next population. If the parents were of 'high quality', the offspring should be similar, or better. This process is repeated until we obtain a generation closest to the desired optimum.
+The process begins with the selection of the 'best' (in our case - with the lowest Tmax) individuals. By crossing them, we get the offspring - with parental traits inherited - to be added to the next population. If the parents were of 'high quality', the offspring should be similar, or better. This process is repeated until we obtain a generation closest to the desired optimum.
 
 The five phases of the genetic algorithm:
 1. Establishing of an initial population
@@ -38,7 +38,7 @@ The five phases of the genetic algorithm:
   - execution of the greedy algorithm for each individual from the starting population
   - sorting individuals in ascending order by their Tmax (maximal execution time) results, obtained with the greedy algorithm
   - transfer of the subject with the best time to a new population
-  - every 10th generation: cloning and mutation of an individual with the best Tmax and adding it to the new population
+  - every 10th generation: cloning and mutating an individual with the best Tmax and adding it to the new population
   - for the remaining new individual places in the new population:
     - selecting two random 'parents' from the first half (with the best times) of individuals from the previous population
     - selecting two random indexes (points of intersection), needed to perform the crossing
@@ -53,3 +53,7 @@ The five phases of the genetic algorithm:
 Mutation - swapping the places of tasks with two random indexes:
 - when creating a new population: triggered several times, number based on the passed 'mixing' percentage parameter
 - with sporadic mutation of the best individual from a given population: triggered only two times
+
+## Results
+
+The genetic alghoritm implementation proved to be reliable, quickly providing results better than ones obtained by the greedy alghoritm (closer to the calculated optimum).
