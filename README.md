@@ -56,4 +56,4 @@ Mutation - swapping the places of tasks with two random indexes:
 
 ## Results
 
-The genetic alghoritm implementation proved to be reliable, quickly providing results better than ones obtained by the greedy alghoritm (closer to the calculated optimum).
+The genetic alghoritm implementation proved to be reliable, quickly providing results better than the ones obtained by the greedy alghoritm (closer to the calculated optimum).
