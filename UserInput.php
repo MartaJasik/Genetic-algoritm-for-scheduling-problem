@@ -1,6 +1,5 @@
 <?php
 
-
   /* Function for getting the filename from user. Checks if 'x' (default) or other proper path provided, repeats otherwise. */
   function askForFileName() {
     while (true) {

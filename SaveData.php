@@ -4,7 +4,7 @@
     
     if ($bGeneticAlgo) {
      // $nMinLength   = min(array_column($arrRunResults, 0));
-      //message("Min population length is $nMinLength.", true);
+     // message("Min population length is $nMinLength.", true);
     } else {
       // If only a single run - propose displaying detailed output data
       if (!$nIterations)

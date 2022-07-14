@@ -61,10 +61,14 @@
       $arrParent1 = $arrRunResults[$arrTwoRandParentKeys[0]][1];
       $arrParent2 = $arrRunResults[$arrTwoRandParentKeys[1]][1];
   
-      $arrAvailableIndexes = range(0, $nNumOfTasks-1);
-      $arrTwoRandKeys      = array_rand($arrAvailableIndexes, 3);
-
-      $arrNewPopulation[] = crossover($arrParent1, $arrParent2, min($arrTwoRandKeys), max($arrTwoRandKeys));
+      $nHalf = floor($nNumOfTasks/2);
+      $arrFirstHalf = range(0, $nHalf-floor($nHalf*0.1));
+      $arrSecondHalf = range($nHalf+floor($nHalf*0.1), $nNumOfTasks);
+      
+      $arrRand1      = array_rand($arrFirstHalf, 1);
+      $arrRand2      = array_rand($arrSecondHalf, 1);
+    
+      $arrNewPopulation[] = crossover($arrParent1, $arrParent2, $arrFirstHalf[$arrRand1], $arrSecondHalf[$arrRand2]);
     }
 
     $arrRunResults = [];
@@ -126,14 +130,6 @@ function crossover($arrParent1, $arrParent2, $nStartIndex, $nEndIndex) {
   foreach (array_slice($arrParent2, $nEndIndex+1) as $el)
     array_push($arrParent2Rest, $el);
 
-/*     echo 'parent1: ' . json_encode($arrParent1) . PHP_EOL;
-    echo 'parent2: ' . json_encode($arrParent2) . PHP_EOL;
-    echo 'nStartIndex: ' . json_encode($nStartIndex) . PHP_EOL;
-    echo 'nEndIndex: ' . json_encode($nEndIndex) . PHP_EOL;
-    echo 'arrInterval1: ' . json_encode($arrInterval1) . PHP_EOL;
-    echo 'arrInterval2: ' . json_encode($arrInterval2) . PHP_EOL;
-    echo 'arrParent2Rest: ' . json_encode($arrParent2Rest) . PHP_EOL; */
-
   foreach ($arrInterval1 as $i) {
     if (in_array($i, $arrParent2Rest)) {
       if (($key = array_search($i, $arrParent2Rest)) !== false) {
@@ -153,10 +149,6 @@ function crossover($arrParent1, $arrParent2, $nStartIndex, $nEndIndex) {
   }
   $i = 0;
 
-/*     echo 'child2: ' . json_encode($newChild) . PHP_EOL;
-    echo 'arrInterval2 B: ' . json_encode($arrInterval2) . PHP_EOL;
-    echo 'arrParent2Rest B: ' . json_encode($arrParent2Rest) . PHP_EOL; */
-  //hack. not right way.
   $arrRemainingVals = $arrInterval2;
 
   foreach ($arrParent2Rest as $el)
@@ -166,6 +158,6 @@ function crossover($arrParent1, $arrParent2, $nStartIndex, $nEndIndex) {
     if ($newChild[$x] == 0)
       $newChild[$x] = array_shift($arrRemainingVals);
   }
- // echo 'child2 B: ' . json_encode($newChild) . PHP_EOL;
+
   return $newChild;
 }

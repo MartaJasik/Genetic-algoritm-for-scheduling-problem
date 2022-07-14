@@ -8,14 +8,14 @@ include 'Algorithms.php';
 class SchedulingAlgorithm {
   private $arrHistory          = [];
   private $arrDirectories      = ["Instances", "Results"];
-  private $arrAlgorithmConfig  = [1 => ["Data file            ", 'm25.txt'],
-                                  2 => ["Data sorting         ", false],
-                                  3 => ["Extra iterations     ", 10000],
-                                  4 => ["Genetic algorithm    ", true],
-                                  5 => ["Generate instances...", 'X'],
-                                  6 => ["Run tests!           ", 'X'],
-                                  7 => ["Show history...      ", 'X'],
-                                  0 => ["Quit                 ", 'X']];
+  private $arrAlgorithmConfig  = [1 => ["Data file               ", 'm25.txt'],
+                                  2 => ["Data sorting            ", false],
+                                  3 => ["Extra iterations        ", 10000],
+                                  4 => ["Genetic algorithm       ", true],
+                                  5 => ["Generate instances...   ", 'X'],
+                                  6 => ["Run tests!              ", 'X'],
+                                  7 => ["Show (greedy) history...", 'X'],
+                                  0 => ["Quit                    ", 'X']];
   
   /* Function used to run the program */
   function main() {
@@ -51,7 +51,7 @@ class SchedulingAlgorithm {
           $this->arrAlgorithmConfig[2][1] = askQuestion("Do you want to sort the data first?");
           break;
         case 3:
-          $this->arrAlgorithmConfig[3][1] = askForNumber("How many extra iterations?", [0, 99999]);
+          $this->arrAlgorithmConfig[3][1] = askForNumber("How many extra iterations (applies to greedy alghoritm only)?", [0, 99999]);
           break;
         case 4:
           $this->arrAlgorithmConfig[4][1] = askQuestion("Do you want to run a genetic algorithm? (No = greedy one)");
